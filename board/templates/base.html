@@ -1,0 +1,33 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
+    {% block extra_style %}{% endblock %}
+
+    <script src="{% static "js/jquery.min.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    {% block extra_js %}{% endblock %}
+</head>
+<body>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    <div class="navbar navbar-fixed-bottom row-fluid">
+
+        <div class="navbar-inner">
+             <div class="container">
+                  <footer class="footer">
+                      <p class="navbar-left">© 2017 Fahreeve  <a href="{% url "about" %}">{% trans "О задаче" %}  </a>{% block extra_footer %}{% endblock %}</p>
+                  </footer>
+             </div>
+        </div>
+    </div>
+</body>
+</html>

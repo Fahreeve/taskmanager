@@ -1,0 +1,80 @@
+{%  extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Задания" %}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8">
+        {% if object_list %}
+            {% for obj in paginator.object_list %}
+                <div class="panel panel-default">
+                    <div class="panel-heading"><a href="{% url 'task-edit' obj.pk %}">{{ obj.title }}</a></div>
+                    <div class="panel-body">
+                        <p>{{ obj.description|slice:":250" }}</p>
+                        <div class="pull-left">
+                            <span class="glyphicon glyphicon-bell" aria-hidden="true"></span> {{ obj.text_deadline }}
+                        </div>
+                        <div class="pull-right">
+                            <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span> {{ obj.text_status }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align: center">{% trans "Заданий нет" %}</p>
+        {% endif %}
+        </div>
+        <div class="col-md-4">
+            <div class="btn-group-vertical" role="group" aria-label="...">
+              <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      {% trans 'Приоритет' %}<span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                      <li><a href="{% url 'task-list' %}?filter=p3">{% trans 'Высокий' %}</a></li>
+                      <li><a href="{% url 'task-list' %}?filter=p2">{% trans 'Средний' %}</a></li>
+                      <li><a href="{% url 'task-list' %}?filter=p1">{% trans 'Низкий' %}</a></li>
+                  </ul>
+              </div>
+
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {% trans 'Дедлайн' %}
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="{% url 'task-list' %}?filter=today">{% trans 'Сегодня' %}</a></li>
+                  <li><a href="{% url 'task-list' %}?filter=tomorrow">{% trans 'Завтра' %}</a></li>
+                  <li><a href="{% url 'task-list' %}?filter=week">{% trans 'В течении недели' %}</a></li>
+                </ul>
+              </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    {% if is_paginated %}
+        <nav aria-label="">
+            <ul class="pager">
+            {% if page_obj.has_previous %}
+                <li class="previous">
+                    <a href="/cars?page={{ page_obj.previous_page_number }}&filter={{ filter }}">
+                        <span aria-hidden="true">&larr;</span> {% trans "Ранее" %}
+                    </a>
+                </li>
+            {% endif %}
+            {% if page_obj.has_next %}
+                <li class="next">
+                    <a href="/cars?page={{ page_obj.next_page_number }}&filter={{ filter }}">
+                        {% trans "Позднее" %} <span aria-hidden="true">&rarr;</span>
+                    </a>
+                </li>
+            {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+{% endblock %}
+
+{% block extra_footer %}<a href="{% url "logout" %}">{% trans "Выйти" %}</a>{% endblock %}
